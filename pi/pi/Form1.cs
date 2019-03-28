@@ -21,6 +21,7 @@ namespace pi
         private int score = 3;
         private Label l1 = new Label();
         private Label l2 = new Label();
+        private Label l3 = new Label();
 
 
         public Form1()
@@ -54,6 +55,14 @@ namespace pi
             l2.ForeColor = Color.Black;
             l2.Text = "";
             Controls.Add(l2);
+
+            l3.Left = 13;
+            l3.Top = 150;
+            l3.Width = 320;
+            l3.Visible = true;
+            l3.ForeColor = Color.Black;
+            l3.Text = "";
+            Controls.Add(l3);
         }
 
         // test Api -- à supprimer
@@ -76,6 +85,7 @@ namespace pi
             if (textBox1.Text == pi[score].ToString()) {
                 if (score < 44) { l1.Text += textBox1.Text; }
                 else if (score < 94) { l2.Text += textBox1.Text; }
+                else if (score < 144) { l3.Text += textBox1.Text; }
                 
                 textBox1.Text = "";
                 score++;
@@ -88,7 +98,7 @@ namespace pi
             BackColor = Color.Red;
             button1.Visible = false;
             textBox1.Visible = false;
-            MessageBox.Show("Perdu !");
+            MessageBox.Show("Perdu ! ");
         }
     }
 }
