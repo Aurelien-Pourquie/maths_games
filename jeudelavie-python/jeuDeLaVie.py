@@ -133,26 +133,3 @@ coord=Label(fen)
 coord.pack(pady='10px')
 
 fen.mainloop()
-
-
-#################################################################################
-"""
-
-
-
-
-
-        
-            #print (case, voisins)
-            if case == "0":
-                if voisins == 3:
-                    rawSortie = rawSortie + "1"
-                else:
-                    rawSortie = rawSortie + "0"
-            elif case == "1":
-                if voisins == 2 or voisins == 3:
-                    rawSortie = rawSortie + "1"
-                else:
-                    rawSortie = rawSortie + "0"
-                    """
-    
