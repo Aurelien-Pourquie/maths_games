@@ -1,7 +1,6 @@
 from tkinter import *
-import sys
-import math
-dimension = 20
+
+dimension = 200
 
 grilleInit = []
 newGrid = []
@@ -22,114 +21,114 @@ def createGrid():
 	for i in range(dimension):
 		for j in range(dimension):
 			if grilleInit[i][j]!=True:
-				plateau.create_rectangle(i*40,j*40,(i+1)*40,(j+1)*40,fill="white")
+				plateau.create_rectangle(i*5,j*5,(i+1)*5,(j+1)*5,fill="white", tag='rec')
 			else:
-				plateau.create_rectangle(i*40,j*40,(i+1)*40,(j+1)*40,fill="black")
+				plateau.create_rectangle(i*5,j*5,(i+1)*5,(j+1)*5,fill="black", tag='recblack')
 
-def clicCase(event):
-	i=event.x//40
-	j=event.y//40	
+def clickCase(event):
+	i=event.x//5
+	j=event.y//5
 	grilleInit[i][j]=True
-	coord['text']=str(i)+','+str(j)+','+str(grilleInit[i][j])
-	caseb=plateau.create_rectangle(i*40,j*40,(i*40+40),(j*40+40),fill="black")
+	caseb=plateau.create_rectangle(i*5,j*5,(i+1)*5,(j+1)*5,fill="black", tag='recblack')
+
+def clearPlateau():
+        plateau.delete('rec')
+        plateau.delete('recblack')
 
 def tourSuivant():
-
-	for raw in range(dimension):
-		for column in range(dimension):
-			
-			voisins = 0
+        clearPlateau()
+        for raw in range(dimension):
+                for column in range(dimension):                        
+                        voisins = 0
         
-	        # En haut à gauche
-			if raw != 0:
-				if column != 0:
-					try:
-						if ((grilleInit[raw-1])[column-1]):
-							voisins = voisins + 1
-					except: 
-						pass
-	        
-	            # En haut
-				try:
-					if ((grilleInit[raw-1])[column]):
-						voisins = voisins + 1
-				except: 
-					pass
-	            
-	            # En haut à droite
-				if column < dimension:
-					try:
-						if ((grilleInit[raw-1])[column+1]):
-							voisins = voisins + 1
-					except: 
-						pass
-	            
-			if column != 0:
-	            # A gauche
-				try:
-					if ((grilleInit[raw])[column-1]):
-						voisins = voisins + 1
-				except: 
-					pass
-			if column < dimension:
-	        # A droite
-				try:
-					if ((grilleInit[raw])[column+1]):
-						voisins = voisins + 1
-				except: 
-					pass
-	        
-			if raw < dimension:
-				if column != 0:
-	                # En bas à gauche
-					try:
-						if ((grilleInit[raw+1])[column-1]):
-							voisins = voisins + 1
-					except: 
-						pass
-	                
-	            # En bas
-				try:
-					if ((grilleInit[raw+1])[column]):
-						voisins = voisins + 1
-				except: 
-					pass
-	            
-				if column < dimension:
-	                # En bas à droite
-					try:
-						if ((grilleInit[raw+1])[column+1]):
-							voisins = voisins + 1							
-					except: 
-						pass
+                # En haut à gauche
+                        if raw != 0:
+                                if column != 0:
+                                        try:
+                                                if ((grilleInit[raw-1])[column-1]):
+                                                        voisins = voisins + 1
+                                        except: 
+                                                pass
+                
+                    # En haut
+                                try:
+                                        if ((grilleInit[raw-1])[column]):
+                                                voisins = voisins + 1
+                                except: 
+                                        pass
+                    
+                    # En haut à droite
+                                if column < dimension:
+                                        try:
+                                                if ((grilleInit[raw-1])[column+1]):
+                                                        voisins = voisins + 1
+                                        except: 
+                                                pass
+                    
+                        if column != 0:
+                    # A gauche
+                                try:
+                                        if ((grilleInit[raw])[column-1]):
+                                                voisins = voisins + 1
+                                except: 
+                                        pass
+                                
+                        if column < dimension:
+                # A droite
+                                try:
+                                        if ((grilleInit[raw])[column+1]):
+                                                voisins = voisins + 1
+                                except: 
+                                        pass
+                
+                        if raw < dimension:
+                                if column != 0:
+                        # En bas à gauche
+                                        try:
+                                                if ((grilleInit[raw+1])[column-1]):
+                                                        voisins = voisins + 1
+                                        except: 
+                                                pass
+                        
+                    # En bas
+                                try:
+                                        if ((grilleInit[raw+1])[column]):
+                                                voisins = voisins + 1
+                                except: 
+                                        pass
+                    
+                                if column < dimension:
+                        # En bas à droite
+                                        try:
+                                                if ((grilleInit[raw+1])[column+1]):
+                                                        voisins = voisins + 1							
+                                        except: 
+                                                pass
 
-				# on change la grille
-				if grilleInit[raw][column] == False :				
-					if voisins == 3:
-						newGrid[raw][column] = True
-				else:
-					if (voisins == 2 or voisins == 3):
-						newGrid[raw][column] = True
-					else:
-						newGrid[raw][column] = False
-	for i in range (dimension):
-		for j in range(dimension):
-			grilleInit[i][j]=newGrid[i][j]
-	createGrid()
+                                # on change la grille
+                                if grilleInit[raw][column] == False :				
+                                        if voisins == 3:
+                                                newGrid[raw][column] = True
+                                else:
+                                        if (voisins == 2 or voisins == 3):
+                                                newGrid[raw][column] = True
+                                        else:
+                                                newGrid[raw][column] = False
+        for i in range (dimension):
+                for j in range(dimension):
+                        grilleInit[i][j]=newGrid[i][j]
+        createGrid()
 
 fen = Tk()
 fen.title("Le jeu de la vie")
 
-plateau=Canvas(fen,height=800,width=800)
+plateau=Canvas(fen,height=1000,width=1000)
 plateau.pack()
 createGrid()
 
-plateau.bind('<ButtonRelease>',clicCase)
+plateau.bind('<ButtonRelease>',clickCase)
 
 bouton1=Button(fen, text='Tour suivant', command=tourSuivant)
 bouton1.pack()
-
-coord=Label(fen)
-coord.pack(pady='10px')
 
 fen.mainloop()
