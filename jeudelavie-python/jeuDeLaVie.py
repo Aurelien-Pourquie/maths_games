@@ -20,7 +20,7 @@ def sizeXL():
 size=Tk()
 size.title("Le jeu de la vie")
 
-choice=Label(size, text="Please hoose a size for the grid")
+choice=Label(size, text="Please choose a size for the grid")
 choice.pack(side="top", pady=10, padx=60)
 buttonS=Button(size, text='S', command=sizeS)
 buttonS.pack(side="left", pady="20", padx="20")

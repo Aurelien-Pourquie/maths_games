@@ -1,74 +1,61 @@
 from tkinter import *
+import time
+from threading import Thread
 
 class Grid:	
 	
 	def __init__(self) :
 		self.grilleInit = []
 		self.newGrille = []
+
 		self.dimension=0
 		self.case=0
 		self.win = 900
+
 		self.fen = Tk()
 		self.fen.title("Le jeu de la vie")
 		self.plateau=Canvas(self.fen,height=self.win,width=self.win)
+		self.turns = Entry(self.fen)
+		self.nextTurn=Button(self.fen, text='Next turn', command=self.tourSuivant)		
+		self.manyTurns = Button(self.fen, text="Many turns", command=self.manyTurnsFunc)
+
 		
 
 	def newGrid(self, gridSize):
 		if (gridSize=="S"):			
 			self.dimension = 20
 			self.case = self.win//self.dimension
-			
-			self.plateau.pack()
 
-			self.createBoolGrid()
-			self.createGrid()
-
-			bouton1=Button(self.fen, text='Tour suivant', command=self.tourSuivant)
-			bouton1.pack()
-
-			self.plateau.bind('<ButtonRelease>',self.clickCase)
+			self.showEverything()
 
 		elif (gridSize=="M"):
 			self.dimension = 50
 			self.case = self.win//self.dimension
 			
-			self.plateau.pack()
-
-			self.createBoolGrid()
-			self.createGrid()
-
-			bouton1=Button(self.fen, text='Tour suivant', command=self.tourSuivant)
-			bouton1.pack()
-
-			self.plateau.bind('<ButtonRelease>',self.clickCase)
+			self.showEverything()
 
 		elif (gridSize=="L"):
 			self.dimension = 100
 			self.case = self.win//self.dimension
 			
-			self.plateau.pack()
-
-			self.createBoolGrid()
-			self.createGrid()
-
-			bouton1=Button(self.fen, text='Tour suivant', command=self.tourSuivant)
-			bouton1.pack()
-
-			self.plateau.bind('<ButtonRelease>',self.clickCase)
+			self.showEverything()
 
 		else:
 			self.dimension = 150
 			self.case = self.win//self.dimension
 			
-			self.plateau.pack()
+			self.showEverything()
 
-			self.createBoolGrid()
-			self.createGrid()
+	def showEverything(self):
+		self.plateau.pack()
+		self.nextTurn.pack()
+		self.turns.pack(pady=5)
+		self.manyTurns.pack()
 
-			bouton1=Button(self.fen, text='Tour suivant', command=self.tourSuivant)
-			bouton1.pack()
+		self.createBoolGrid()
+		self.createGrid()			
 
-			self.plateau.bind('<ButtonRelease>',self.clickCase)
+		self.plateau.bind('<ButtonRelease>',self.clickCase)
 
 	def createBoolGrid(self):
 		for i in range(self.dimension):
@@ -98,8 +85,16 @@ class Grid:
 		caseb=self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="black", tag='recblack')
 
 	def clearPlateau(self):
-	        self.plateau.delete('rec')
-	        self.plateau.delete('recblack')
+			self.plateau.delete('rec')
+			self.plateau.delete('recblack')
+
+	def manyTurnsFunc(self):
+		a = self.turns.get()
+		if (a != ""):
+			for i in range(int(a)):
+				self.tourSuivant()
+				self.fen.update()
+				self.fen.after(30)
 
 	def tourSuivant(self):
 		self.clearPlateau()
