@@ -1,6 +1,4 @@
 from tkinter import *
-import time
-from threading import Thread
 
 class Grid:	
 	
@@ -13,13 +11,15 @@ class Grid:
 		self.win = 900
 
 		self.fen = Tk()
-		self.fen.title("Le jeu de la vie")
+		self.fen.title("The Game of Life")		
 		self.plateau=Canvas(self.fen,height=self.win,width=self.win)
-		self.turns = Entry(self.fen)
-		self.nextTurn=Button(self.fen, text='Next turn', command=self.tourSuivant)		
-		self.manyTurns = Button(self.fen, text="Many turns", command=self.manyTurnsFunc)
+		self.number=Canvas(self.fen)
+		self.turns = Entry(self.fen, bg="light blue")
+		self.nextTurn=Button(self.fen, text='Next turn', command=self.tourSuivant, bg="white")		
+		self.manyTurns = Button(self.fen, text="Many turns", command=self.manyTurnsFunc, bg="white")
 
-		
+		self.nbOfTurns = 0
+		self.nbOfTurnsLabel = Label(self.number, fg="red")		
 
 	def newGrid(self, gridSize):
 		if (gridSize=="S"):			
@@ -49,8 +49,10 @@ class Grid:
 	def showEverything(self):
 		self.plateau.pack()
 		self.nextTurn.pack()
-		self.turns.pack(pady=5)
-		self.manyTurns.pack()
+		self.turns.pack(side="left", pady=5, padx=(360,5))
+		self.manyTurns.pack(side="left")
+		self.number.pack(side="bottom")
+		self.nbOfTurnsLabel.pack()		
 
 		self.createBoolGrid()
 		self.createGrid()			
@@ -70,7 +72,9 @@ class Grid:
 				ligneInit.append(False)
 			self.newGrille.append(ligneInit)
 
-	def createGrid(self):
+	def createGrid(self):		
+		self.nbOfTurnsLabel.config(text=("Turn = " + str(self.nbOfTurns)))
+
 		for i in range(self.dimension):
 			for j in range(self.dimension):
 				if self.grilleInit[i][j]!=True:
@@ -85,19 +89,29 @@ class Grid:
 		caseb=self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="black", tag='recblack')
 
 	def clearPlateau(self):
-			self.plateau.delete('rec')
-			self.plateau.delete('recblack')
+			try:
+				self.plateau.delete('rec')
+				self.plateau.delete('recblack')
+			except:
+				pass
+			
 
 	def manyTurnsFunc(self):
 		a = self.turns.get()
-		if (a != ""):
-			for i in range(int(a)):
-				self.tourSuivant()
-				self.fen.update()
-				self.fen.after(30)
+		try:
+			if (a != ""):
+				for i in range(int(a)):
+					self.tourSuivant()
+					self.fen.update()
+					self.fen.after(30)
+		except:
+			pass
 
 	def tourSuivant(self):
+		self.nbOfTurns = self.nbOfTurns + 1
+
 		self.clearPlateau()
+
 		for raw in range(self.dimension):
 			for column in range(self.dimension):                        
 				voisins = 0
@@ -178,4 +192,7 @@ class Grid:
 		for i in range (self.dimension):
 			for j in range(self.dimension):
 				self.grilleInit[i][j]=self.newGrille[i][j]
-		self.createGrid()
+		try:
+			self.createGrid()
+		except:
+			pass
