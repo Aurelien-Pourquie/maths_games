@@ -12,6 +12,9 @@ class Grid:
 		self.grilleInit = []
 		self.newGrille = []
 
+		self.grilleInit2 = []
+		self.newGrille2 = []
+
 		self.fen = Tk()
 		self.fen.title("The Game of Life")		
 		self.plateau=Canvas(self.fen,height=self.win,width=self.win)
@@ -41,6 +44,7 @@ class Grid:
 		##self.plateau.bind('<ButtonRelease>',self.clickCase)		
 
 	def createBoolGrid(self):
+		# 1
 		for i in range(self.dimension):
 			ligneInit = []
 			for j in range(self.dimension):				
@@ -52,12 +56,25 @@ class Grid:
 
 		for i in range(self.dimension):
 			ligneInit = []
-			for j in range(self.dimension):
+			for j in range(self.dimension):				
+					ligneInit.append(False)
+			self.newGrille.append(ligneInit)
+
+			# 2
+		for i in range(self.dimension):
+			ligneInit = []
+			for j in range(self.dimension):				
 				if randrange(self._range) == 1:
 					ligneInit.append(True)
 				else:
 					ligneInit.append(False)
-			self.newGrille.append(ligneInit)
+			self.grilleInit2.append(ligneInit)
+
+		for i in range(self.dimension):
+			ligneInit = []
+			for j in range(self.dimension):				
+					ligneInit.append(False)
+			self.newGrille2.append(ligneInit)
 
 	def createGrid(self):		
 		self.nbOfTurnsLabel.config(text=("Turn = " + str(self.nbOfTurns)))
@@ -69,6 +86,13 @@ class Grid:
 				else:
 					self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="cyan", tag='recCyan')
 
+			for j in range(self.dimension):
+				if self.grilleInit2[i][j]==True:
+					if self.grilleInit[i][j]==True:
+						self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="green", tag='recGreen')
+					else:
+						self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="orange", tag='recOrange')
+
 	"""def clickCase(self,event):
 		i=event.x//self.case
 		j=event.y//self.case		
@@ -79,6 +103,8 @@ class Grid:
 			try:
 				self.plateau.delete('rec')
 				self.plateau.delete('recCyan')
+				self.plateau.delete('recOrange')
+				self.plateau.delete('recGreen')
 			except:
 				pass
 			
