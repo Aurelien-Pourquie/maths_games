@@ -3,10 +3,28 @@ from random import randrange
 
 class Grid:	
 	
-	def __init__(self) :
-		self._range = 10 # chances of a cell being alive on init
-		self.dimension=100 # square root of the number of cells
-		self.win = 800 # dimension on screen
+	def __init__(self,dimensionEntry, rangeEntry, windowEntry):
+		try:
+			self._range = int(rangeEntry) # chances of a cell being alive on init
+		except:
+			self._range = 2
+
+		try:
+			if int(dimensionEntry > 0):
+				self.dimension=int(dimensionEntry) # square root of the number of cells
+			else:
+				self.dimension=100 
+		except:
+			self.dimension=100 
+
+		try:
+			if int(windowEntry) >= 350:				
+				self.win = int(windowEntry) # dimension on screen
+			else:
+				self.win = 800
+		except:
+			self.win = 800 
+
 		self.case = self.win//self.dimension
 
 		self.grilleInit = []
@@ -125,6 +143,8 @@ class Grid:
 
 		self.clearPlateau()
 
+		### to be optimized
+
 		for raw in range(self.dimension):
 			for column in range(self.dimension):                        
 				voisins = 0
@@ -205,6 +225,90 @@ class Grid:
 		for i in range (self.dimension):
 			for j in range(self.dimension):
 				self.grilleInit[i][j]=self.newGrille[i][j]
+
+		######
+
+		for raw in range(self.dimension):
+			for column in range(self.dimension):                        
+				voisins = 0
+    
+			# En haut à gauche
+				if raw != 0:
+					if column != 0:
+						try:
+							if ((self.grilleInit2[raw-1])[column-1]):
+								voisins = voisins + 1
+						except: 
+							pass
+            
+			# En haut
+					try:
+						if ((self.grilleInit2[raw-1])[column]):
+							voisins = voisins + 1
+					except: 
+						pass
+                
+			# En haut à droite
+					if column < self.dimension:
+						try:
+							if ((self.grilleInit2[raw-1])[column+1]):
+								voisins = voisins + 1
+						except: 
+							pass
+                
+				if column != 0:
+			# A gauche
+					try:
+						if ((self.grilleInit2[raw])[column-1]):
+							voisins = voisins + 1
+					except: 
+						pass
+                            
+				if column < self.dimension:
+			# A droite
+					try:
+						if ((self.grilleInit2[raw])[column+1]):
+							voisins = voisins + 1
+					except: 
+						pass
+            
+				if raw < self.dimension:
+					if column != 0:
+			# En bas à gauche
+						try:
+							if ((self.grilleInit2[raw+1])[column-1]):
+								voisins = voisins + 1
+						except: 
+							pass
+                    
+			# En bas
+					try:
+						if ((self.grilleInit2[raw+1])[column]):
+							voisins = voisins + 1
+					except: 
+						pass
+        
+					if column < self.dimension:
+			# En bas à droite
+						try:
+							if ((self.grilleInit2[raw+1])[column+1]):
+								voisins = voisins + 1							
+						except: 
+							pass
+
+			# on change la grille
+					if self.grilleInit2[raw][column] == False :				
+						if voisins == 3:
+							self.newGrille2[raw][column] = True
+					else:
+						if (voisins == 2 or voisins == 3):
+							self.newGrille2[raw][column] = True
+						else:
+							self.newGrille2[raw][column] = False
+		for i in range (self.dimension):
+			for j in range(self.dimension):
+				self.grilleInit2[i][j]=self.newGrille2[i][j]
+
 		try:
 			self.createGrid()
 		except:
