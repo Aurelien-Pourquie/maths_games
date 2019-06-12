@@ -1,6 +1,7 @@
 from tkinter import *
 from random import randrange
 
+
 class Grid:	
 	
 	def __init__(self,dimensionEntry, rangeEntry, windowEntry):
@@ -27,22 +28,25 @@ class Grid:
 
 		self.case = self.win//self.dimension
 
-		self.grilleInit = []
+		self.grilleInit = [] # The "blue" grid
 		self.newGrille = []
 
-		self.grilleInit2 = []
+		self.grilleInit2 = [] # The "orange" grid
 		self.newGrille2 = []
 
-		self.fen = Tk()
+		self.fen = Tk() # The Window
 		self.fen.title("The Game of Life")		
-		self.plateau=Canvas(self.fen,height=self.win,width=self.win)
-		self.number=Canvas(self.fen)
-		self.turns = Entry(self.fen, bg="light blue")
-		self.nextTurn=Button(self.fen, text='Next turn', command=self.tourSuivant, bg="white")		
-		self.manyTurns = Button(self.fen, text="Many turns", command=self.manyTurnsFunc, bg="white")
+		self.plateau=Canvas(self.fen,height=self.win,width=self.win, bg='white') # The Grid
+		self.number=Canvas(self.fen) # The number of turns
+		self.manyTurnsLine = Canvas(self.fen, highlightthickness=0) # Number of turns Entry + Many Turns Button
+		self.turns = Entry(self.manyTurnsLine, bg="light blue") # Number of turns Entry
+		self.nextTurn=Button(self.fen, text='Next turn', command=self.tourSuivant, bg="white")
+		self.manyTurns = Button(self.manyTurnsLine, text="Many turns", command=self.manyTurnsFunc, bg="white") # Many Turns Button
 
 		self.nbOfTurns = 0
-		self.nbOfTurnsLabel = Label(self.number, fg="red")		
+		self.nbOfTurnsLabel = Label(self.number, fg="red")
+
+
 
 	def newGrid(self):
 				
@@ -51,9 +55,10 @@ class Grid:
 	def showEverything(self):
 		self.plateau.pack()
 		self.nextTurn.pack()
-		self.turns.pack(side="left", pady=5, padx=(360,5))
-		self.manyTurns.pack(side="left")
-		self.number.pack(side="bottom")
+		self.manyTurnsLine.pack()
+		self.turns.pack(side='left', padx=5, pady=(5,0))
+		self.manyTurns.pack(padx=5)
+		self.number.pack() 
 		self.nbOfTurnsLabel.pack()		
 
 		self.createBoolGrid()
@@ -128,7 +133,7 @@ class Grid:
 			
 
 	def manyTurnsFunc(self):
-		a = self.turns.get()
+		a = self.turns.get()		
 		try:
 			if (a != ""):
 				for i in range(int(a)):
