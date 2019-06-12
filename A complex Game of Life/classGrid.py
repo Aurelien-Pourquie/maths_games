@@ -10,7 +10,7 @@ class Grid:
 			self._range = 2
 
 		try:
-			if int(dimensionEntry > 0):
+			if int(dimensionEntry) > 0:
 				self.dimension=int(dimensionEntry) # square root of the number of cells
 			else:
 				self.dimension=100 

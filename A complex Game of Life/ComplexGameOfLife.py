@@ -5,7 +5,7 @@ from classRules import Rules
 
 
 def NewGrid():
-	a = Grid(dimensionEntry.get(), rangeEntry.get(), rangeWindow.get())
+	a = Grid(dimensionEntry.get(), rangeEntry.get(), windowEntry.get())
 	a.newGrid()
 
 def showRules():
@@ -25,9 +25,9 @@ rangeEntry=Entry(fen, bg="light blue")
 rangeEntry.insert(END, 'Range')
 rangeEntry.pack(side="left", pady=10, padx=(10,0))
 
-rangeWindow=Entry(fen, bg="light blue")
-rangeWindow.insert(END, 'Window size')
-rangeWindow.pack(side="left", pady=10, padx=(10,0))
+windowEntry=Entry(fen, bg="light blue")
+windowEntry.insert(END, 'Window size')
+windowEntry.pack(side="left", pady=10, padx=(10,0))
 
 buttonGrid=Button(fen, text='New grid', command=NewGrid)
 buttonGrid.pack(side="left", pady=10, padx=20)
