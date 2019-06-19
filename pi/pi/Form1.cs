@@ -68,7 +68,8 @@ namespace pi
         // test Api -- à supprimer
         private void affichePi()
         {
-            label1.Text=pi;
+            //label1.Text=pi;
+            label1.Text="";
         }
 
         private async void GetPi(string path)
