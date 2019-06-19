@@ -1,7 +1,6 @@
 from tkinter import *
 from random import randrange
 
-
 class Grid:	
 	
 	def __init__(self,dimensionEntry, rangeEntry, windowEntry):
@@ -53,8 +52,6 @@ class Grid:
 
 		self.greenOnly = False
 
-
-
 	def newGrid(self):
 				
 		self.showEverything()		
@@ -72,8 +69,6 @@ class Grid:
 
 		self.createBoolGrid()
 		self.createGrid()			
-
-		##self.plateau.bind('<ButtonRelease>',self.clickCase)
 
 	def showGreen(self):
 		self.greenOnly = False if self.greenOnly else True
@@ -149,8 +144,7 @@ class Grid:
 						if self.grilleInit[i][j]==True:
 							self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="green", tag='recGreen')
 						else:
-							self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="orange", tag='recOrange')
-	
+							self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="orange", tag='recOrange')	
 
 	def clearPlateau(self):
 			try:
@@ -159,8 +153,7 @@ class Grid:
 				self.plateau.delete('recOrange')
 				self.plateau.delete('recGreen')
 			except:
-				pass
-			
+				pass			
 
 	def manyTurnsFunc(self):
 		a = self.turns.get()		
