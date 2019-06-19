@@ -6,7 +6,10 @@ class Grid:
 	
 	def __init__(self,dimensionEntry, rangeEntry, windowEntry):
 		try:
-			self._range = int(rangeEntry) # chances of a cell being alive on init
+			if int(rangeEntry) > 0:
+				self._range = int(rangeEntry) # chances of a cell being alive on init
+			else:
+				self._range = 2
 		except:
 			self._range = 2
 
@@ -39,12 +42,16 @@ class Grid:
 		self.plateau=Canvas(self.fen,height=self.win,width=self.win, bg='white') # The Grid
 		self.number=Canvas(self.fen) # The number of turns
 		self.manyTurnsLine = Canvas(self.fen, highlightthickness=0) # Number of turns Entry + Many Turns Button
+		self.nextTurnLine = Canvas(self.fen, highlightthickness=0) # Next Turn Button + Only Green Button
 		self.turns = Entry(self.manyTurnsLine, bg="light blue") # Number of turns Entry
-		self.nextTurn=Button(self.fen, text='Next turn', command=self.tourSuivant, bg="white")
+		self.nextTurn=Button(self.nextTurnLine, text='Next turn', command=self.tourSuivant, bg="white")
+		self.onlyGreen=Button(self.nextTurnLine, text='Show green only', command=self.showGreen, bg='white')
 		self.manyTurns = Button(self.manyTurnsLine, text="Many turns", command=self.manyTurnsFunc, bg="white") # Many Turns Button
 
 		self.nbOfTurns = 0
 		self.nbOfTurnsLabel = Label(self.number, fg="red")
+
+		self.greenOnly = False
 
 
 
@@ -54,17 +61,29 @@ class Grid:
 
 	def showEverything(self):
 		self.plateau.pack()
-		self.nextTurn.pack()
+		self.nextTurn.pack(side='left', padx=5, pady=(5,0))
+		self.onlyGreen.pack(padx=5, pady=(5,0))
+		self.nextTurnLine.pack()
 		self.manyTurnsLine.pack()
 		self.turns.pack(side='left', padx=5, pady=(5,0))
 		self.manyTurns.pack(padx=5)
 		self.number.pack() 
-		self.nbOfTurnsLabel.pack()		
+		self.nbOfTurnsLabel.pack()
 
 		self.createBoolGrid()
 		self.createGrid()			
 
-		##self.plateau.bind('<ButtonRelease>',self.clickCase)		
+		##self.plateau.bind('<ButtonRelease>',self.clickCase)
+
+	def showGreen(self):
+		self.greenOnly = False if self.greenOnly else True
+		
+		if self.greenOnly:
+			self.onlyGreen.configure(bg='green')
+		else:
+			self.onlyGreen.configure(bg='white')
+
+		self.createGrid()
 
 	def createBoolGrid(self):
 		# 1
@@ -102,25 +121,36 @@ class Grid:
 	def createGrid(self):		
 		self.nbOfTurnsLabel.config(text=("Turn = " + str(self.nbOfTurns)))
 
-		for i in range(self.dimension):
-			for j in range(self.dimension):
-				if self.grilleInit[i][j]!=True:
-					self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="white", tag='rec')
-				else:
-					self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="cyan", tag='recCyan')
-
-			for j in range(self.dimension):
-				if self.grilleInit2[i][j]==True:
-					if self.grilleInit[i][j]==True:
-						self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="green", tag='recGreen')
+		if self.greenOnly:
+			for i in range(self.dimension):
+				for j in range(self.dimension):
+					if self.grilleInit[i][j]!=True:
+						self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="white", tag='rec')
 					else:
-						self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="orange", tag='recOrange')
+						self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="white", tag='recCyan')
 
-	"""def clickCase(self,event):
-		i=event.x//self.case
-		j=event.y//self.case		
-		self.grilleInit[i][j]=True
-		caseb=self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="cyan", tag='recCyan')"""
+				for j in range(self.dimension):
+					if self.grilleInit2[i][j]==True:
+						if self.grilleInit[i][j]==True:
+							self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="green", tag='recGreen')
+						else:
+							self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="white", tag='recOrange')
+
+		else:
+			for i in range(self.dimension):
+				for j in range(self.dimension):
+					if self.grilleInit[i][j]!=True:
+						self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="white", tag='rec')
+					else:
+						self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="cyan", tag='recCyan')
+
+				for j in range(self.dimension):
+					if self.grilleInit2[i][j]==True:
+						if self.grilleInit[i][j]==True:
+							self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="green", tag='recGreen')
+						else:
+							self.plateau.create_rectangle(i*self.case,j*self.case,(i+1)*self.case,(j+1)*self.case,fill="orange", tag='recOrange')
+	
 
 	def clearPlateau(self):
 			try:
